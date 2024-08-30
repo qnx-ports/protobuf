@@ -3996,8 +3996,10 @@ void MessageGenerator::GenerateClassData(io::Printer* p) {
       )cc");
     } else {
       p->Emit(R"cc(
-        $superclass$::ClearImpl, $superclass$::ByteSizeLongImpl,
-            $superclass$::_InternalSerializeImpl,
+        static_cast<void (::$proto_ns$::MessageLite::*)()>(
+            &$classname$::ClearImpl),
+            $superclass$::ByteSizeLongImpl, $superclass$::_InternalSerializeImpl
+            ,
       )cc");
     }
   };
