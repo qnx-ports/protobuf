@@ -74,6 +74,11 @@ typename T::Proxy MakeHandle(upb_Message* msg, upb_Arena* arena) {
   return typename T::Proxy(msg, arena);
 }
 
+template <typename T>
+auto* GetInternalMsg(T&& message) {
+  return hpb::internal::PrivateAccess::GetInternalMsg(std::forward<T>(message));
+}
+
 }  // namespace hpb::interop::upb
 
 #endif  // GOOGLE_PROTOBUF_HPB_BACKEND_UPB_INTEROP_H__
