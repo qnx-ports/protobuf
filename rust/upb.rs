@@ -134,8 +134,9 @@ impl<'msg> MutatorMessageRef<'msg> {
 }
 
 fn copy_bytes_in_arena<'msg>(arena: &'msg Arena, val: &'msg [u8]) -> &'msg [u8] {
+    let layout = Layout::for_value(val);
     // SAFETY: the alignment of `[u8]` is less than `UPB_MALLOC_ALIGN`.
-    let new_alloc = unsafe { arena.alloc(Layout::for_value(val)) };
+    let new_alloc = unsafe { arena.alloc(layout.size(), layout.align()) };
     debug_assert_eq!(new_alloc.len(), val.len());
 
     let start: *mut u8 = new_alloc.as_mut_ptr().cast();
