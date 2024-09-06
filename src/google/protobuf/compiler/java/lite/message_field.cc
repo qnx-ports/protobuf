@@ -88,7 +88,8 @@ void SetMessageVariables(
 
   // We use `x.getClass()` as a null check because it generates less bytecode
   // than an `if (x == null) { throw ... }` statement.
-  (*variables)["null_check"] = "value.getClass();\n";
+  (*variables)["null_check"] =
+      "Class<?> unusedValueClass = value.getClass();\n";
   // Annotations often use { and } to determine ranges.
   (*variables)["{"] = "";
   (*variables)["}"] = "";
