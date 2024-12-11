@@ -18,6 +18,11 @@ if(protobuf_HAVE_LD_VERSION_SCRIPT)
 endif()
 target_link_libraries(libprotoc PRIVATE libprotobuf)
 target_link_libraries(libprotoc PUBLIC ${protobuf_ABSL_USED_TARGETS})
+if(QNX)
+target_include_directories(libprotoc PUBLIC
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+endif()
 protobuf_configure_target(libprotoc)
 if(protobuf_BUILD_SHARED_LIBS)
   target_compile_definitions(libprotoc
