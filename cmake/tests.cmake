@@ -226,7 +226,11 @@ if(MINGW)
 endif()
 
 add_executable(tests ${all_tests_files} ${common_test_files} ${tests_proto_files} ${lite_test_proto_files})
-target_link_libraries(tests libprotoc libprotobuf gmock_main)
+if(QNX)
+  target_link_libraries(tests libprotoc libprotobuf gmock_main regex)
+else()
+  target_link_libraries(tests libprotoc libprotobuf gmock_main)
+endif()
 
 set(test_plugin_files
   ${protobuf_source_dir}/src/google/protobuf/compiler/mock_code_generator.cc
@@ -236,19 +240,31 @@ set(test_plugin_files
 )
 
 add_executable(test_plugin ${test_plugin_files})
-target_link_libraries(test_plugin libprotoc libprotobuf gmock)
+if(QNX)
+  target_link_libraries(test_plugin libprotoc libprotobuf gmock regex)
+else()
+  target_link_libraries(test_plugin libprotoc libprotobuf gmock)
+endif()
 
 set(lite_test_files
   ${protobuf_source_dir}/src/google/protobuf/lite_unittest.cc
 )
 add_executable(lite-test ${lite_test_files} ${common_lite_test_files} ${lite_test_proto_files})
-target_link_libraries(lite-test libprotobuf-lite gmock_main)
+if(QNX)
+  target_link_libraries(lite-test libprotobuf-lite gmock_main regex)
+else()
+  target_link_libraries(lite-test libprotobuf-lite gmock_main)
+endif()
 
 set(lite_arena_test_files
   ${protobuf_source_dir}/src/google/protobuf/lite_arena_unittest.cc
 )
 add_executable(lite-arena-test ${lite_arena_test_files} ${common_lite_test_files} ${lite_test_proto_files})
-target_link_libraries(lite-arena-test libprotobuf-lite gmock_main)
+if(QNX)
+  target_link_libraries(lite-arena-test libprotobuf-lite gmock_main regex)
+else()
+  target_link_libraries(lite-arena-test libprotobuf-lite gmock_main)
+endif()
 
 add_custom_target(check
   COMMAND tests

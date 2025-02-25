@@ -134,7 +134,11 @@
 #ifdef __APPLE__
 #include <machine/endian.h>  // __BYTE_ORDER
 #else
+#ifdef __QNX__
+#define PROTOBUF_LITTLE_ENDIAN 1
+#else
 #include <endian.h>  // __BYTE_ORDER
+#endif
 #endif
 #if ((defined(__LITTLE_ENDIAN__) && !defined(__BIG_ENDIAN__)) ||    \
      (defined(__BYTE_ORDER) && __BYTE_ORDER == __LITTLE_ENDIAN)) && \
