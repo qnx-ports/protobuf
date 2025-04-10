@@ -32,6 +32,9 @@ else()
     "${googletest_source_dir}/src/gtest-all.cc"
   )
   target_link_libraries(gmock ${CMAKE_THREAD_LIBS_INIT})
+  if(QNX)
+    target_link_libraries(gmock regex)
+  endif()
   add_library(gmock_main STATIC "${googlemock_source_dir}/src/gmock_main.cc")
   target_link_libraries(gmock_main gmock)
 
@@ -255,6 +258,9 @@ if (MSVC)
   )
 endif()
 target_link_libraries(tests protobuf-lite-test-common protobuf-test-common libprotoc libprotobuf GTest::gmock_main)
+if(QNX)
+  target_link_libraries(tests socket)
+endif()
 
 set(test_plugin_files
   ${protobuf_SOURCE_DIR}/src/google/protobuf/compiler/mock_code_generator.cc
@@ -288,6 +294,10 @@ add_custom_target(check
   COMMAND tests
   DEPENDS tests test_plugin
   WORKING_DIRECTORY ${protobuf_SOURCE_DIR})
+
+if(QNX)
+  install(TARGETS tests test_plugin RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+endif()
 
 add_test(NAME check
   COMMAND tests ${protobuf_GTEST_ARGS}
